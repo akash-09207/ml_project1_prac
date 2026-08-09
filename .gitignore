@@ -219,3 +219,4 @@ __marimo__/
 
 #Folders
 .artifact
+.test.py

@@ -6,6 +6,8 @@ from src.logger import logging
 from sklearn.model_selection import train_test_split
 import pandas as pd
 from dataclasses import dataclass
+from src.components.data_trasformation import DataTransformer
+from src.components.data_trasformation import DataTransformationConfig
 
 @dataclass
 class DataIngestionConfig:
@@ -24,12 +26,12 @@ class DataIngestion:
 
             os.makedirs(os.path.dirname(self.ingestion_config.raw_data_path),exist_ok=True)
 
-            df.to_csv(self.ingestion_config.raw_data_path,index=False,header=False)
+            df.to_csv(self.ingestion_config.raw_data_path,index=False,header=True)
             train,test=train_test_split(df,test_size=0.2,random_state=42)
 
-            train.to_csv(self.ingestion_config.train_data_path,index=False,header=False)
+            train.to_csv(self.ingestion_config.train_data_path,index=False,header=True)
 
-            test.to_csv(self.ingestion_config.test_data_path,index=False,header=False)
+            test.to_csv(self.ingestion_config.test_data_path,index=False,header=True)
 
             logging.info('Ingestion has completed')
             return (
@@ -42,4 +44,7 @@ class DataIngestion:
 
 if __name__=='__main__':
     ingest=DataIngestion()
-    print(ingest.initiate_data_ingestion())
+    _,train,test=ingest.initiate_data_ingestion()
+
+    data_transform=DataTransformer()
+    data_transform.initiate_data_transformation(train,test)

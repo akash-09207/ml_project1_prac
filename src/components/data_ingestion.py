@@ -8,6 +8,7 @@ import pandas as pd
 from dataclasses import dataclass
 from src.components.data_trasformation import DataTransformer
 from src.components.data_trasformation import DataTransformationConfig
+from src.components.model_training import ModelTrainer
 
 @dataclass
 class DataIngestionConfig:
@@ -47,4 +48,6 @@ if __name__=='__main__':
     _,train,test=ingest.initiate_data_ingestion()
 
     data_transform=DataTransformer()
-    data_transform.initiate_data_transformation(train,test)
+    train_arr,test_arr,_=data_transform.initiate_data_transformation(train,test)
+    modeltrainer=ModelTrainer()
+    print(modeltrainer.initiate_model_trainer(train_arr,test_arr))
